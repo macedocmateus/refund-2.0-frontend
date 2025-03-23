@@ -37,7 +37,7 @@ export function Refund() {
                 <Input legend="Valor" required></Input>
             </div>
 
-            <Upload filename="foto.png"></Upload>
+            <Upload></Upload>
         </form>
     );
 }
