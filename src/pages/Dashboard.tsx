@@ -9,6 +9,8 @@ import { Button } from "../components/Button";
 
 import { RefundItem } from "../components/RefundItem";
 
+import { Pagination } from "../components/Pagination";
+
 const REFUND_EXAMPLE = {
     id: "123",
     name: "mateus",
@@ -65,6 +67,8 @@ export function Dashboard() {
                 <RefundItem data={REFUND_EXAMPLE}></RefundItem>
                 <RefundItem data={REFUND_EXAMPLE}></RefundItem>
             </div>
+
+            <Pagination current={1} total={10}></Pagination>
         </div>
     );
 }
