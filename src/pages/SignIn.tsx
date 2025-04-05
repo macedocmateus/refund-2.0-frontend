@@ -7,6 +7,8 @@ import { api } from "../services/api";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 
+import { useAuth } from "../hooks/useAuth";
+
 const SignInSchema = z.object({
     email: z.string().email({ message: "E-mail inválido" }),
     password: z.string().trim().min(1, { message: "Informe a senha" }),
@@ -14,6 +16,8 @@ const SignInSchema = z.object({
 
 export function SignIn() {
     const [state, formAction, isLoading] = useActionState(signIn, null);
+
+    const auth = useAuth();
 
     async function signIn(_: any, formData: FormData) {
         try {
@@ -23,7 +27,7 @@ export function SignIn() {
             });
 
             const response = await api.post("/sessions", data);
-            console.log(response.data);
+            auth.save(response.data);
         } catch (error) {
             console.log(error);
 
