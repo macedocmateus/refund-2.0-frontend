@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { data, useNavigate, useParams } from "react-router";
 import { z, ZodError } from "zod";
+import { AxiosError } from "axios";
+import { api } from "../services/api";
 
 import fileSvg from "../assets/file.svg";
-
 import { CATEGORIES, CATEGORIES_KEYS } from "../utils/categories";
+
 import { Input } from "../components/Input";
 import { Select } from "../components/Select";
 import { Upload } from "../components/Upload";
@@ -30,7 +32,7 @@ export function Refund() {
     const navigate = useNavigate();
     const params = useParams<{ id: string }>();
 
-    function onSubmit(e: React.FormEvent) {
+    async function onSubmit(e: React.FormEvent) {
         e.preventDefault();
 
         if (params.id) {
@@ -45,11 +47,20 @@ export function Refund() {
                 category,
                 amount: amount.replace(",", "."),
             });
+
+            await api.post("/refunds", {
+                ...data,
+                filename: "123456789109876543210.png",
+            });
         } catch (error) {
             console.log(error);
 
             if (error instanceof ZodError) {
                 return alert(error.issues[0].message);
+            }
+
+            if (error instanceof AxiosError) {
+                return alert(error.response?.data.message);
             }
 
             alert("Não foi possível realizar a solicitação");
