@@ -27,7 +27,7 @@ export function Refund() {
     const [name, setName] = useState("");
     const [amount, setAmount] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [filename, setFilename] = useState<File | null>(null);
+    const [file, setFile] = useState<File | null>(null);
 
     const navigate = useNavigate();
     const params = useParams<{ id: string }>();
@@ -42,6 +42,15 @@ export function Refund() {
         try {
             setIsLoading(true);
 
+            if (!file) {
+                return alert("Selecione um arquivo de comprovante");
+            }
+
+            const fileUploadForm = new FormData();
+            fileUploadForm.append("file", file);
+
+            const response = await api.post("/uploads", fileUploadForm);
+
             const data = refundSchema.parse({
                 name,
                 category,
@@ -50,7 +59,7 @@ export function Refund() {
 
             await api.post("/refunds", {
                 ...data,
-                filename: "123456789109876543210.png",
+                filename: response.data.filename,
             });
         } catch (error) {
             console.log(error);
@@ -127,10 +136,10 @@ export function Refund() {
                 </a>
             ) : (
                 <Upload
-                    filename={filename && filename.name}
+                    filename={file && file.name}
                     disabled={!!params.id}
                     onChange={(e) =>
-                        e.target.files && setFilename(e.target.files[0])
+                        e.target.files && setFile(e.target.files[0])
                     }
                 ></Upload>
             )}
