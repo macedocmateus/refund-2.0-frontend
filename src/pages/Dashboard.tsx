@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { AxiosError } from "axios";
 
 import { api } from "../services/api";
@@ -32,7 +32,7 @@ export function Dashboard() {
 
     async function fetchRefounds() {
         try {
-            const response = await api.get(
+            const response = await api.get<RefundsPaginationAPIResponse>(
                 `/refunds?name=${name.trim()}&page=${page}&perPage=${PER_PAGE}`
             );
 
