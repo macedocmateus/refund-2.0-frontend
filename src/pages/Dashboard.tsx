@@ -50,6 +50,11 @@ export function Dashboard() {
         }
     }
 
+    function onSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        fetchRefounds();
+    }
+
     function handlePagination(action: "next" | "previous") {
         setPage((prevPage) => {
             if (action === "next" && prevPage < totalOfPage) {
@@ -75,7 +80,7 @@ export function Dashboard() {
             </h1>
 
             <form
-                onSubmit={fetchRefounds}
+                onSubmit={onSubmit}
                 className="flex flex-1 items-center justify-between pb-6 border-b-[1px] border-b-gray-400 md:flex-row gap-2 my-6"
             >
                 <Input
